@@ -10,6 +10,7 @@ Update :
 """
 
 import os
+import re
 from lxml import etree
 import sys
 
@@ -40,8 +41,29 @@ def xsl_transformation(xslfile, xmlfile):
 	xsl_doc = etree.parse(xslfile)
 	xsl_transformer = etree.XSLT(xsl_doc)
 	output_doc = xsl_transformer(source)
-	print(type(output_doc))
 	return output_doc
 
 
-xsl_transformation(xslfile, xmlfile)
+def tex_compil():
+	unnecessaries_extensions = ["toc", "gz", "xml", "out", "blg", "bcf", "bbl", "aux"]
+	tex = xsl_transformation(xslfile, xmlfile)
+	texfolder = re.sub(r"(\.\/.+)\/.+\.xml", "\\1", xmlfile)
+	texname = re.sub(r"\.\/.+\/(.+)\.xml", "\\1.tex", xmlfile)
+	logname = re.sub(r"\.\/.+\/(.+)\.xml", "\\1.log", xmlfile)
+	pdfname = re.sub(r"\.\/.+\/(.+)\.xml", "\\1.pdf", xmlfile)
+	texpath = os.path.join(texfolder, texname)
+	with open(texpath, 'w', encoding="utf-8") as newtexfile:
+		newtexfile.write(str(tex))
+	print("***** COMPILATION N°1 *****")
+	os.system("xelatex ./{}".format(texpath))
+	print("***** COMPILATION N°2 *****")
+	os.system("xelatex ./{}".format(texpath))
+	print("{} ----> Sucess !".format(pdfname))
+	os.system("mv ./{} ./{}".format(pdfname, texfolder))
+	os.system("mv ./{} {}".format(logname, texfolder))
+	for file_extension in unnecessaries_extensions:
+		os.system("rm *.{}".format(file_extension))
+		print("*.{} ----> deleted !".format(file_extension))
+
+
+tex_compil()
