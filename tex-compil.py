@@ -7,6 +7,7 @@ Affiliation : French National Center for Scientific Research (CNRS)
 Assigned at the Centre de recherches historiques (CRH, UMR 8558)
 Date : 2021-08-02
 Update :
+python3 tex-compil.py ./xsl-paques.xsl ./1865-02-castan-barnabe/1865-02-09-castan-barnabe.xml
 """
 
 import os
