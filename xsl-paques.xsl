@@ -22,7 +22,7 @@
         <xsl:apply-templates select="//text"/>
         \end{document}</xsl:template>
     <xsl:template match="//head[@type='section']">
-        \section{<xsl:value-of select="."/>}
+        \section*{<xsl:value-of select="."/>}
     </xsl:template>
     <xsl:template match="//text//p">
         <xsl:apply-templates/>
